@@ -1,5 +1,6 @@
-import { Fragment, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import LessonsForm from "./LessonsForm";
+import LessonsItem from "./LessonsItem";
 
 function LessonsMain() {
   // state
@@ -9,36 +10,48 @@ function LessonsMain() {
       name: "lesson 1",
       duration: 45,
       category: "test",
+      currentTime: 30,
+      active: true,
     },
     {
       id: 1,
       name: "lesson 2",
       duration: 45,
       category: "programming",
+      currentTime: 0,
+      active: false,
     },
     {
       id: 2,
       name: "lesson 3",
       duration: 45,
       category: "sport",
+      currentTime: 0,
+      active: false,
     },
     {
       id: 3,
       name: "lesson 4",
       duration: 45,
       category: "cleaning",
+      currentTime: 0,
+      active: false,
     },
     {
       id: 4,
       name: "lesson 5",
       duration: 45,
       category: "cooking",
+      currentTime: 0,
+      active: false,
     },
     {
       id: 5,
       name: "lesson 6",
       duration: 45,
       category: "test",
+      currentTime: 0,
+      active: false,
     },
   ]);
 
@@ -54,14 +67,15 @@ function LessonsMain() {
   );
 
   //   events
-  const handleAdd = (lessonToAdd) => {
-    const lessonToAddWithId = { ...lessonToAdd, id: lessons.length };
-    setLessons((prev) => [...prev, lessonToAddWithId]);
-    setLessonToAdd({
-      name: "",
-      duration: "",
-      category: "",
-    });
+  const handleAdd = (lessonToAdd, amount) => {
+    let lessonsToAddArr = [];
+
+    for (let i = 0; i < amount; i++) {
+      const lessonToAddWithId = { ...lessonToAdd, id: lessons.length + i };
+      lessonsToAddArr.push(lessonToAddWithId);
+    }
+
+    setLessons((prev) => [...prev, ...lessonsToAddArr]);
   };
 
   return (
@@ -89,14 +103,12 @@ function LessonsMain() {
       <div className="wrapper">
         <ol>
           {lessons.map((lesson, index) => (
-            <Fragment key={lesson.id}>
-              <li className="lesson">
-                {lesson.name} - {lesson.duration}min
-              </li>
-              {index < lessons.length - 1 && (
-                <li className="break"> break - 15min</li>
-              )}
-            </Fragment>
+            <LessonsItem
+              key={lesson.id}
+              lesson={lesson}
+              index={index}
+              length={lessons.length}
+            />
           ))}
         </ol>
 

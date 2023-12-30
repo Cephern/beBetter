@@ -1,6 +1,8 @@
 import { useState } from "react";
 
 function LessonsForm({ handleAdd }) {
+  const [amount, setAmount] = useState("");
+
   const [lessonToAdd, setLessonToAdd] = useState({
     name: "",
     duration: "",
@@ -9,7 +11,13 @@ function LessonsForm({ handleAdd }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    handleAdd(lessonToAdd);
+    handleAdd(lessonToAdd, Number(amount));
+    setLessonToAdd({
+      name: "",
+      duration: "",
+      category: "",
+    });
+    setAmount("");
   };
 
   return (
@@ -38,6 +46,13 @@ function LessonsForm({ handleAdd }) {
           setLessonToAdd({ ...lessonToAdd, category: e.target.value })
         }
       />
+      <input
+        type="text"
+        placeholder="lessons amount"
+        value={amount}
+        onChange={(e) => setAmount(e.target.value)}
+      />
+
       <button>Add</button>
     </form>
   );
